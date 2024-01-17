@@ -6,8 +6,39 @@
 
 /// answer to Tick1
 // the header given here is correct.
-let polarToCartesianApprox (r,theta) n = 
-    failwithf "Tick1 not yet implemented" // replace this line with your top-level implementation
+
+
+// let polarToCartesianApprox (r,theta) n = 
+//     failwithf "Tick1 not yet implemented" // replace this line with your top-level implementation
+
+
+
+
+let factorial n =
+    [1 .. n]
+    |> List.fold (fun acc x -> acc * float x) 1.0
+
+
+let sineTaylorSeries x n =
+    if n = 0 then 0.0 else
+    let terms = 
+        [0 .. (n - 1) / 2]
+        |> List.map (fun k -> Math.Pow(-1.0, float k) * Math.Pow(x, float (2 * k + 1)) / float (factorial (2 * k + 1)))
+    List.sum terms
+
+
+let cosineTaylorSeries x n =
+    if n = 0 then 1.0 else
+    let terms = 
+        [0 .. n / 2]
+        |> List.map (fun k -> Math.Pow(-1.0, float k) * Math.Pow(x, float (2 * k)) / float (factorial (2 * k)))
+    List.sum terms
+
+let polarToCartesianApprox (r, theta) n =
+    let x = r * cosineTaylorSeries theta n
+    let y = r * sineTaylorSeries theta n
+    (x, y)
+
 
 
 //--------------------testbench code - DO NOT CHANGE-----------------------------//
